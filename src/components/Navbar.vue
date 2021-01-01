@@ -1,23 +1,22 @@
 <template>
     <nav>
-        <v-app-bar dense flat>
+        <v-app-bar dense flat class="mb-5">
             <v-toolbar-title class="text-uppercase grey--text">
                 <span class="font-weight-light">Snake</span>
-                <span>Fever</span>
+                <span class="font-weight-bold">Fever</span>
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
 
-            <v-btn text color="grey">
-                <span>Change Username</span>
-                <v-icon right>mdi-exit-to-app</v-icon>
-            </v-btn>
+            <Popup />
         </v-app-bar>
     </nav>
 </template>
 
 <script>
+import Popup from "./Popup.vue"
+
 export default {
-    
+    components: { Popup },
 }
 </script>

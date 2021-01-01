@@ -7,7 +7,7 @@ class RedApple {
         this.maxSpawnInterval = 23000;
         this.nextSpawnInterval = Math.random() * this.maxSpawnInterval;
         this.lastSpawnTime = 0;
-        this.amountOfIntangibility = 3000; // This will make red apples intangible for 3 seconds
+        this.amountOfIntangibility = 3500; // This will make red apples intangible for 3.5 seconds
         this.redAppleArray = [];
 
         this.scene = scene;
@@ -102,7 +102,10 @@ class RedApple {
                 );
                 
                 const color = Phaser.Display.Color.GetColor(colorObject.r, colorObject.g, colorObject.b);
-                this.redAppleArray[this.redAppleArray.length - 1].setFillStyle(color);
+                let target = this.redAppleArray[this.redAppleArray.length - 1];
+                if (target) {
+                    this.redAppleArray[this.redAppleArray.length - 1].setFillStyle(color);
+                }
             }
         });
     }

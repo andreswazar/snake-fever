@@ -1,6 +1,6 @@
 class apiCommunicator {
     static sendScoreToAPI(score) {
-        fetch("http://localhost:8081/api/postScore", {
+        fetch("http://localhost:8082/api/postScore", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

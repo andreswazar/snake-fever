@@ -7,11 +7,13 @@
                 <v-col cols="3">
 
                 </v-col>
+
                 <v-col cols="6">
                     <div id="Game">
                         <Game />
                     </div>  
                 </v-col>
+
                 <v-col cols="3">
                     <CurrentScore />
                     <Scores />
@@ -44,8 +46,8 @@ export default {
 };
 </script>
 
-<style scoped>
-    #Game {
-        width: 100%;
+<style>
+    canvas {
+        border: solid 2px gray;
     }
 </style>

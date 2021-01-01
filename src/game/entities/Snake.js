@@ -5,30 +5,35 @@ class Snake {
     constructor(scene) {
         this.gameOver = false;
         this.deathAnimationStarted = false;
+
         this.tileSize = 16;
-        this.lastMoveTime = 0;  //  Adjusts the rate at which the snake moves
+        this.lastMoveTime = 0;  //  Records the last time at which the snake moved to know when it will move again (lastMoveTime + moveInterval)
         this.moveInterval = 150; // Adjusts the rate at which the snake moves
         this.direction = Phaser.Math.Vector2.RIGHT; 
         this.lastDirection = Phaser.Math.Vector2.RIGHT; // Useful for preventing "180 degrees turns"
         this.previousPosition = []; // Useful for moving the body of the snake
-        this.applesConsumed = 1; // Variable used to make the snake grow. The value here will be the starting size of the body
+        this.applesConsumed = 0; // Variable used to make the snake grow. The value here will be the starting size of the body
         this.score = 0;
 
         this.scene = scene;
 
         this.body = [];
+        // Adds the initial square, which is the head
         this.body.push(this.scene.add.rectangle(this.scene.game.config.width / 2, this.scene.game.config.height / 2, this.tileSize, this.tileSize, 0xf0f0f0).setOrigin(0));
 
         scene.input.keyboard.on("keydown", (e) => { // Captures the event object and forwards it to a custom function
             this.keydown(e)
         });
+
+        // Initializes score to 0 in the UI
+        uiUpdater.updateScoreUI(this.score);
     }
 
     // Snake movement
-    keydown(event) { // Prevents doing "180 degrees turns"
+    keydown(event) { 
         switch (event.keyCode) {
             case 37: //left
-                if (this.lastDirection != Phaser.Math.Vector2.RIGHT) {
+                if (this.lastDirection != Phaser.Math.Vector2.RIGHT) { // Prevents doing "180 degrees turns"
                     this.direction = Phaser.Math.Vector2.LEFT;
                 }
             break;

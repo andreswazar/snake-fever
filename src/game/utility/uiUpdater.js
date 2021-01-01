@@ -1,7 +1,7 @@
 class uiUpdater {
     static updateScoreUI(score) {
         let scoreElement = document.querySelector("#score");
-        scoreElement.textContent = `Score: ${score}`;
+        scoreElement.textContent = `Current Score: ${score}`;
     }
 }
 
