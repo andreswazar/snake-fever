@@ -27,7 +27,7 @@ export default {
     },
     methods: {
         getScoresFromApi() {
-            console.log("Requested score from backend");
+            console.log("Requested scores from backend");
 
             fetch("http://localhost:8082/api/getAllScores", {
             method: "GET",
