@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import selectOgg from "./../assets/open_002.ogg";
 
+import {store} from "./../../store/store.js";
+
 class MenuScene extends Phaser.Scene {
     constructor() {
         super({key: "Menu", active: true});
@@ -88,9 +90,11 @@ class MenuScene extends Phaser.Scene {
 
     // Opens main game and closes menu
     handleClickPlay() {
-        this.selectSound.play();
-        this.closeMenu();
-        this.scene.launch("MainScene");
+        if (store.state.gameIsPlayable) {
+            this.selectSound.play();
+            this.closeMenu();
+            this.scene.launch("MainScene");
+        }
     }
 }
 
