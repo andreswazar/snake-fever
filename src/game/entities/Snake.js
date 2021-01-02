@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import uiUpdater from "./../utility/uiUpdater.js";
+import {store} from "./../../store/store.js";
 
 class Snake {
     constructor(scene) {
@@ -25,8 +25,8 @@ class Snake {
             this.keydown(e)
         });
 
-        // Initializes score to 0 in the UI
-        uiUpdater.updateScoreUI(this.score);
+        // Initializes score to 0 in the Vuex store and UI
+        store.state.score = this.score;
     }
 
     // Snake movement

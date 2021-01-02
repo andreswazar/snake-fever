@@ -45,7 +45,9 @@ class MainScene extends Phaser.Scene {
     triggerGameOver() {
         this.gameOverSound.play(); // Plays game over jingle
 
-        apiCommunicator.sendScoreToAPI(this.snake.score); // Sends score to backend
+        if (this.snake.score > 0) {
+            apiCommunicator.sendScoreToAPI(this.snake.score); // Sends score to backend
+        }
 
         this.time.addEvent({ // Shows the game over screen in 1.5 seconds
             delay: 1500,
