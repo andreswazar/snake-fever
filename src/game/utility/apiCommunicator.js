@@ -7,10 +7,9 @@ class apiCommunicator {
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 playerUsername: store.state.username, // Takes username from Vuex store
-                pointsScored: score.toString() // Takes score from parameter, which is from snake.js property
+                pointsScored: score.toString() // Takes score from parameter, which is from a snake.js property
             })
         }).then(function (response) {
-            console.log("Sent score to backend");
             return response.json;
         });
     }

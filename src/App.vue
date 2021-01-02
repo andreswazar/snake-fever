@@ -4,17 +4,17 @@
     <v-main>
         <v-container>
             <v-row>
-                <v-col cols="3">
-
+                <v-col order="2" cols="12" md="3" class="order-md-1">
+                    <HowToPlay />
                 </v-col>
 
-                <v-col cols="6">
-                    <div id="Game">
+                <v-col order="1" cols="12" md="6" class="order-md-2">
+                    <div id="Game" class="text-center">
                         <Game />
                     </div>  
                 </v-col>
 
-                <v-col cols="3">
+                <v-col order="3" cols="12" md="3" class="order-md-3">
                     <CurrentScore />
                     <Scores />
                 </v-col>
@@ -25,9 +25,10 @@
 </template>
 
 <script>
-import CurrentScore from "./components/CurrentScore.vue";
-import Scores from "./components/Scores.vue";
 import Navbar from "./components/Navbar.vue";
+import HowToPlay from "./components/HowToPlay.vue";
+import Scores from "./components/Scores.vue";
+import CurrentScore from "./components/CurrentScore.vue";
 import Game from "./components/Game.vue";
 
 export default {
@@ -35,6 +36,7 @@ export default {
 
   components: {
       Navbar,
+      HowToPlay,
       Game,
       Scores,
       CurrentScore
@@ -49,5 +51,12 @@ export default {
 <style>
     canvas {
         border: solid 2px gray;
+    }
+
+    @media only screen and (min-width: 960px) {
+        canvas {
+            border: solid 2px gray;
+            height: 445px;
+        }
     }
 </style>

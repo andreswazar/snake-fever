@@ -1,3 +1,5 @@
+import {store} from "./../../store/store.js";
+
 class GreenApple {
     constructor(scene) {
         this.tileSize = 16;
@@ -66,6 +68,7 @@ class GreenApple {
             
             snake.applesConsumed++;
             snake.score++;
+            store.state.score++, // Increases score in Vuex store to update the Current Score component
             this.generateApple(snake, obstacles, redApples);
         }
     }
