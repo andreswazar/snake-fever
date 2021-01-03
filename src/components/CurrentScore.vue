@@ -6,9 +6,9 @@
 
 <script>
 export default {
-    data() {
-        return {
-            score: this.$store.state.score
+    computed: {
+        score() {
+            return this.$store.state.score
         }
     }
 }

@@ -98,7 +98,6 @@ class Snake {
 
     checkForAppleConsumption() {
         if (this.applesConsumed > 0) { // Grows the snake after consuming green apple
-            uiUpdater.updateScoreUI(this.score);
 
             this.applesConsumed--;
             this.body.push(this.scene.add.rectangle(this.previousPosition[0], this.previousPosition[1], this.tileSize, this.tileSize, 0xffffff).setOrigin(0));
