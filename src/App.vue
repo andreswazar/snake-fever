@@ -2,6 +2,7 @@
   <v-app>
     <Navbar />
     <v-main>
+        <Alert />
         <v-container>
             <v-row>
                 <v-col order="2" cols="12" md="3" class="order-md-1">
@@ -9,7 +10,7 @@
                 </v-col>
 
                 <v-col order="1" cols="12" md="6" class="order-md-2">
-                    <div id="Game" class="text-center">
+                    <div class="text-center">
                         <Game />
                     </div>  
                 </v-col>
@@ -29,6 +30,7 @@ import Navbar from "./components/Navbar.vue";
 import HowToPlay from "./components/HowToPlay.vue";
 import Scores from "./components/Scores.vue";
 import CurrentScore from "./components/CurrentScore.vue";
+import Alert from "./components/Alert.vue";
 import Game from "./components/Game.vue";
 
 export default {
@@ -39,11 +41,12 @@ export default {
       HowToPlay,
       Game,
       Scores,
-      CurrentScore
+      CurrentScore,
+      Alert
   },
 
   data: () => ({
-    //
+      //
   }),
 };
 </script>

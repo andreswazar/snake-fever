@@ -51,10 +51,17 @@ export default {
             fetch("http://localhost:8082/api/getAllScores", {
             method: "GET",
             headers: {"Content-Type": "application/json"},
-            }).then(function (response) {
+            }).then((response) => {
                 return response.json();
             }).then((decodedResponse) => {
                 this.scores = decodedResponse;
+                this.$store.state.alertMessage = "High scores retrieved successfully."
+                this.$store.state.alertType = "success"
+                this.$store.state.showAlert = true;
+            }).catch(() => {
+                this.$store.state.alertMessage = "Failed to retrieve high scores."
+                this.$store.state.alertType = "error"
+                this.$store.state.showAlert = true;
             });
         }
     },
