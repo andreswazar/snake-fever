@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 
+import gameMusicOgg from "./../assets/POL-star-way-short.wav";
 import gameOverOgg from "./../assets/jingles_NES00.ogg";
 import greenAppleEatOgg from "./../assets/jingles_NES01.ogg";
 import redAppleEatOgg from "./../assets/jingles_NES02.ogg";
@@ -17,6 +18,7 @@ class MainScene extends Phaser.Scene {
     }
 
     preload() {
+        this.load.audio("gameMusic", gameMusicOgg);
         this.load.audio("gameOver", gameOverOgg);
         this.load.audio("greenApple", greenAppleEatOgg);
         this.load.audio("redApple", redAppleEatOgg);
@@ -24,6 +26,10 @@ class MainScene extends Phaser.Scene {
 
     create() {
         // Sounds
+        this.gameMusic = this.sound.add("gameMusic", {
+            volume: 1,
+            loop: true,
+        });
         this.gameOverSound = this.sound.add("gameOver");
         this.greenAppleSound = this.sound.add("greenApple");
         this.redAppleSound = this.sound.add("redApple");
@@ -33,6 +39,9 @@ class MainScene extends Phaser.Scene {
         this.redApple = new RedApple(this);
         this.obstacles = new Obstacle(this);
         this.greenApple = new GreenApple(this);
+
+        // Play game music
+        this.gameMusic.play();
     }
 
     update(time) {
@@ -42,23 +51,33 @@ class MainScene extends Phaser.Scene {
         this.obstacles.update(time, this.snake, this.greenApple.apple);
     }
 
-    triggerGameOver() {
-        this.gameOverSound.play(); // Plays game over jingle
+    triggerGameOver(message) {
+        this.gameMusic.stop();
 
-        if (this.snake.score > 0) {
-            apiCommunicator.sendScoreToAPI(this.snake.score); // Sends score to backend
+        if (this.snake.score > 0) { // Sends score to backend, prevents score of 0 from being sent
+            apiCommunicator.sendScoreToAPI(this.snake.score); 
         }
 
-        this.time.addEvent({ // Shows the game over screen in 1.5 seconds
-            delay: 1500,
-            callback: this.showGameOver,
-            callbackScope: this
-        });
+        if (message == "Game Over") {
+            this.gameOverSound.play(); // Plays game over jingle
+
+            this.time.addEvent({ // Shows the game over screen in 1.5 seconds
+                delay: 1500,
+                callback: this.showGameOver.bind(this, message),
+                callbackScope: this
+            });
+        } else { // Message is "You Win!"
+            this.time.addEvent({ // Shows the game over screen in 1.5 seconds
+                delay: 1500,
+                callback: this.showGameOver.bind(this, message),
+                callbackScope: this
+            });
+        }
     }
 
-    showGameOver() {
+    showGameOver(message) {
         // Show the Game Over scene as overlay
-        this.scene.launch("GameOver", {score: this.snake.score, gameConfig: this.game.config});
+        this.scene.launch("GameOver", {score: this.snake.score, gameConfig: this.game.config, title: message});
         let panel = this.scene.get("GameOver");
 
         // Listen to events from the Game Over scene

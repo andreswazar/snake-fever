@@ -1,40 +1,81 @@
 import Phaser from "phaser";
 import selectOgg from "./../assets/open_002.ogg";
+import titleTheme from "./../assets/POL-treasure-match-short.wav";
 
 import {store} from "./../../store/store.js";
 
 class MenuScene extends Phaser.Scene {
     constructor() {
         super({key: "Menu", active: true});
+
+        // Data for the moving lines in title screen
+        this.tileSize = 16;
+        this.rectangles = [];
+        this.rectangleWidth = 64;
+        this.rectangleHeight = 16; 
+        this.nextSpawnInterval = 500;
+        this.lastSpawnTime = 0;
     }
 
     preload() {
         this.load.audio("select_sound", selectOgg);
+        this.load.audio("title_theme", titleTheme);
     }
 
     create() {
         // Sound
         this.selectSound = this.sound.add("select_sound");
+        this.titleThemeMusic = this.sound.add("title_theme", {
+            volume: 1,
+            loop: true,
+        });
         
         // Variables
         let positionX = this.game.config.width / 8 - 10;
-        let positionY = this.game.config.height / 8;
+        // let positionY = this.game.config.height / 8;
         let width = 500;
-        let height = 500;
-        
-        // Background
-        this.background = this.add.graphics({x: positionX, y: positionY});
-        this.background.fillStyle("0x302C2E", 1);
-        this.background.fillRoundedRect(0, 0, width, height, 15);
+        // let height = 500;
         
         // Title
         this.add.text(positionX + (width / 2), 200, "Snake Fever", {
-            fontSize: '48px',
+            fontFamily: "Kenney Blocks",
+            fontSize: '64px',
 			color: '#fff'
-        }).setOrigin(0.5, 0.5);
+        }).setOrigin(0.5, 0.5).setDepth(100);
 
         // Buttons
         this.createAllButtons();
+
+        // Play title theme
+        this.titleThemeMusic.play();
+    }
+
+    update(time) {
+        // Create rectangles
+        if (time > this.lastSpawnTime + this.nextSpawnInterval) {
+            this.lastSpawnTime = time;
+
+            this.rectangles.push(this.add.rectangle(
+                -64, 
+                Math.floor((Math.random() * this.game.config.height / this.tileSize)) * this.tileSize, // Random height
+                this.rectangleWidth, 
+                this.rectangleHeight, 
+                0xf0f0f0
+            ).setOrigin(0));
+        }
+
+        // Move rectangles
+        for (let rectangle of this.rectangles) {
+            rectangle.x += 3;
+        }
+
+        // Destroy rectangles
+        this.rectangles.forEach((rectangle, index) => {
+            if (rectangle.x >= this.game.config.width + 64) {                
+                rectangle.destroy();
+                this.rectangles.splice(index,1);
+            }
+        });
     }
 
     // Buttons
@@ -49,15 +90,17 @@ class MenuScene extends Phaser.Scene {
 
         btn.fillStyle("0x39314B", 1);
         btn.fillRoundedRect(0, 0, width, height, 10);
+        btn.setDepth(100);
 
         let hit_area = new Phaser.Geom.Rectangle(0, 0, width, height);
         btn.setInteractive(hit_area, Phaser.Geom.Rectangle.Contains);
 
         // Label
         this.add.text(positionX + (width / 2), positionY + (height / 2), message, {
+            fontFamily: "Kenney Blocks",
             fontSize: '30px',
 			color: '#fff'
-        }).setOrigin(0.5, 0.5);
+        }).setOrigin(0.5, 0.5).setDepth(101);
 
         // Events definition to change colors based on cursor position
         btn.myDownCallback = () => {
@@ -90,7 +133,8 @@ class MenuScene extends Phaser.Scene {
 
     // Opens main game and closes menu
     handleClickPlay() {
-        if (store.state.gameIsPlayable) {
+        if (store.state.gameIsPlayable) { // Prevents user from clicking through the username modal
+            this.titleThemeMusic.stop();
             this.selectSound.play();
             this.closeMenu();
             this.scene.launch("MainScene");

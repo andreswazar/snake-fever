@@ -22,7 +22,7 @@ class Snake {
         this.body.push(this.scene.add.rectangle(this.scene.game.config.width / 2, this.scene.game.config.height / 2, this.tileSize, this.tileSize, 0xf0f0f0).setOrigin(0));
 
         scene.input.keyboard.on("keydown", (e) => { // Captures the event object and forwards it to a custom function
-            this.keydown(e)
+            this.keydown(e);
         });
 
         // Initializes score to 0 in the Vuex store and UI
@@ -78,10 +78,10 @@ class Snake {
         this.body[0].x += this.direction.x * 16;
         this.body[0].y += this.direction.y * 16;
 
-        this.lastDirection = this.direction;
+        this.lastDirection = this.direction; // Prevents 180 degree turns
     }
 
-    moveBody() {
+    moveBody() { // Moves each square to the previous position of the one in front of it
         let previousX = 0;
         let previousY = 0;
         
@@ -99,11 +99,17 @@ class Snake {
     checkForAppleConsumption() {
         if (this.applesConsumed > 0) { // Grows the snake after consuming green apple
 
+            if (this.score >= 100) { // Check for victory
+                this.scene.triggerGameOver("You Win!");
+                this.gameOver = true;
+            }
+
             this.applesConsumed--;
             this.body.push(this.scene.add.rectangle(this.previousPosition[0], this.previousPosition[1], this.tileSize, this.tileSize, 0xffffff).setOrigin(0));
+        
         } else if (this.applesConsumed < 0) { // Shrinks the snake by 2 after consuming red apple or kills it
             if (this.body.length <= 2) {
-                this.scene.triggerGameOver();
+                this.scene.triggerGameOver("Game Over");
                 this.gameOver = true;
             } else {
                 this.applesConsumed += 2;
@@ -118,14 +124,14 @@ class Snake {
         // Snake dies by crashing against itself
         for (let i = 1; i < this.body.length; i++) {
             if (this.body[0].x == this.body[i].x && this.body[0].y == this.body[i].y) {
-                this.scene.triggerGameOver();
+                this.scene.triggerGameOver("Game Over");
                 this.gameOver = true;
             }
         }
 
         // Snake dies by going off screen
         if (this.body[0].x < 0 || this.body[0].x >= this.scene.game.config.width || this.body[0].y < 0 || this.body[0].y >= this.scene.game.config.height) {
-            this.scene.triggerGameOver();
+            this.scene.triggerGameOver("Game Over");
             this.gameOver = true;
         }
     }

@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 
 import selectOgg from "./../assets/open_002.ogg";
+import gameOverTheme from "./../assets/POL-foggy-forest-short.wav";
 
 class GameOver extends Phaser.Scene {
     constructor() {
@@ -8,18 +9,27 @@ class GameOver extends Phaser.Scene {
     }
 
     init (data) {
-        // Score data passed from "Play" scene
+        // Score data passed from "Main Scene" scene
         this.score = data.score;
         this.config = data.gameConfig;
+        this.title = data.title; // Allows this scene to also be used as a victory scene
     }
 
     preload() {
         this.load.audio("select_sound", selectOgg);
+        this.load.audio("game_over_theme", gameOverTheme);
     }
 
     create() {
         // Sound
         this.selectSound = this.sound.add("select_sound");
+        this.gameOverTheme = this.sound.add("game_over_theme", {
+            volume: 1,
+            loop: true,
+        });
+
+        // Play music
+        this.gameOverTheme.play();
         
         // Variables
         let positionX = this.game.config.width / 8 - 10;
@@ -33,15 +43,17 @@ class GameOver extends Phaser.Scene {
         this.background.fillRoundedRect(0, 0, width, height, 15);
         
         // Title
-        this.add.text(positionX + (width / 2), 200, "Game Over", {
-            fontSize: '48px',
+        this.add.text(positionX + (width / 2), 200, this.title, {
+            fontFamily: "Kenney Blocks",
+            fontSize: '64px',
 			color: '#fff'
         }).setOrigin(0.5, 0.5);
         
         // Score Text
-        let scoreText = this.score < 10 ? "0" + this.score : this.score;
+        let scoreText = this.score < 10 ? "0" + this.score : this.score; // Appends a 0 before single digit score
 
-        this.add.text(positionX + (width / 2), 300, "Score:" + scoreText, {
+        this.add.text(positionX + (width / 2), 300, "Score: " + scoreText, {
+            fontFamily: "Kenney Blocks",
             fontSize: '48px',
 			color: '#fff'
         }).setOrigin(0.5, 0.5);
@@ -68,6 +80,7 @@ class GameOver extends Phaser.Scene {
 
         // Label
         this.add.text(positionX + (width / 2), positionY + (height / 2), message, {
+            fontFamily: "Kenney Blocks",
             fontSize: '30px',
 			color: '#fff'
         }).setOrigin(0.5, 0.5);
@@ -98,6 +111,7 @@ class GameOver extends Phaser.Scene {
 
     // Emits custom event that MainScene is listening to
     clickTryAgain() {
+        this.gameOverTheme.stop();
         this.selectSound.play();
         this.events.emit("clickTryAgain");
     }

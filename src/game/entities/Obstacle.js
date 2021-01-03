@@ -89,7 +89,7 @@ class Obstacle {
         // Snake dies by crashing against obstacle
         for (let element of this.obstacleArray) {
             if ( (time > element.intangibilityTimer) && (snake.body[0].x == element.x && snake.body[0].y == element.y) ) {
-                this.scene.triggerGameOver();
+                this.scene.triggerGameOver("Game Over");
                 snake.gameOver = true;
             }
         }

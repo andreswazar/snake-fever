@@ -58,7 +58,8 @@ class GreenApple {
 
         let position = this.getUniquePosition(snake, obstacles, redApples);
 
-        this.apple = this.scene.add.rectangle(position[0], position[1], this.tileSize, this.tileSize, 0x00ff00).setOrigin(0)
+        this.apple = this.scene.add.rectangle(position[0], position[1], this.tileSize, this.tileSize, 0x00ff00).setOrigin(0);
+        this.apple.setDepth(10);
     }
 
     checkForAppleEating(snake, obstacles, redApples) {

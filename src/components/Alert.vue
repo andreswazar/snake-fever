@@ -1,6 +1,6 @@
 <template>
     <div class="alert">
-        <v-alert v-model="showAlert" transition="fade-transition" v-bind:type="alertType">
+        <v-alert v-model="alertIsVisible" transition="fade-transition" v-bind:type="alertType">
             {{ alertMessage }}
         </v-alert>
     </div>
@@ -9,7 +9,7 @@
 <script>
 export default {
     computed: {
-        showAlert() {
+        alertIsVisible() {
             return this.$store.state.showAlert
         },
         alertType() {
@@ -20,14 +20,20 @@ export default {
         }
     },
     methods: {
+        showAlert(alertMessage, alertType) {
+            this.$store.state.alertMessage = alertMessage;
+            this.$store.state.alertType = alertType;
+            this.$store.state.showAlert = true;
+        },
         hideAlert() {
-            window.setInterval(() => {
+            window.setTimeout(() => {
                 this.$store.state.showAlert = false;
-            }, 5000);
+            }, 3000);
         }
     },
     mounted() {
-        this.hideAlert();
+        this.$store.state.showAlertFunction = this.showAlert;
+        this.$store.state.hideAlertFunction = this.hideAlert;
     }
 }
 </script>

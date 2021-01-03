@@ -10,14 +10,12 @@ class apiCommunicator {
                 pointsScored: score.toString() // Takes score from parameter, which is from a snake.js property
             })
         }).then((response) => {
-            store.state.alertMessage = "Score recorded successfully."
-            store.state.alertType = "success"
-            store.state.showAlert = true;
+            store.state.showAlertFunction("Score recorded successfully.", "success");
+            store.state.hideAlertFunction();
             return response.json;
         }).catch(() => {
-            store.state.alertMessage = "Failed to record score."
-            store.state.alertType = "error"
-            store.state.showAlert = true;
+            store.state.showAlertFunction("Failed to record score.", "error");
+            store.state.hideAlertFunction();
         });
     }
 }

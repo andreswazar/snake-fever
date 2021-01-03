@@ -5,7 +5,7 @@ class RedApple {
         this.tileSize = 16;
         this.maxAliveTime = 43000;
         this.maxSpawnInterval = 23000;
-        this.nextSpawnInterval = Math.random() * this.maxSpawnInterval;
+        this.nextSpawnInterval = Math.random() * this.maxSpawnInterval; // Gets any time between 0 and 23 seconds
         this.lastSpawnTime = 0;
         this.amountOfIntangibility = 3500; // This will make red apples intangible for 3.5 seconds
         this.redAppleArray = [];
