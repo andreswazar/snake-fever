@@ -30,7 +30,18 @@ export default {
 
     @media only screen and (min-width: 960px) {
         .v-card {
-            height: 460px;
+            height: 415px;
+        }
+
+        .v-card__text {
+            font-size: 80%;
+            margin-top: -7px;
+        }
+    }
+
+    @media only screen and (min-width: 1264px) {
+        .v-card__text {
+            font-size: 90%;
         }
     }
 </style>

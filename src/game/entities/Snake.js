@@ -21,8 +21,9 @@ class Snake {
         // Adds the initial square, which is the head
         this.body.push(this.scene.add.rectangle(this.scene.game.config.width / 2, this.scene.game.config.height / 2, this.tileSize, this.tileSize, 0xf0f0f0).setOrigin(0));
 
-        scene.input.keyboard.on("keydown", (e) => { // Captures the event object and forwards it to a custom function
-            this.keydown(e);
+        scene.input.keyboard.on("keydown", (event) => { // Captures the event object and forwards it to a custom function
+            event.preventDefault();
+            this.keydown(event);
         });
 
         // Initializes score to 0 in the Vuex store and UI

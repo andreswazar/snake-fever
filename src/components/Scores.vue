@@ -88,7 +88,7 @@ export default {
 
     @media only screen and (min-width: 960px) {
         .v-card {
-            height: 380px;
+            height: 335px;
         }
 
         p {
@@ -96,7 +96,7 @@ export default {
         }
     }
 
-    @media only screen and (min-width: 1265px) {
+    @media only screen and (min-width: 1264px) {
         p {
             font-size: 100%;
         }

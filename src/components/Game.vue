@@ -1,7 +1,7 @@
 <template>
     <div :id="containerId" v-if="downloaded"/>
     <div class="placeholder text-center" v-else>
-        <v-progress-circular class="pt-5" :size="80" :width="7" color="gray" indeterminate></v-progress-circular>
+        <v-progress-circular class="pt-5 loading" :size="80" :width="7" color="gray" indeterminate></v-progress-circular>
     </div>    
 </template>
 
@@ -29,9 +29,16 @@ export default {
 </script>
 
 <style scoped>
-    .placeholder {
+    .loading {
         position: absolute;
         top: 20%;
         left: 47%;
+    }
+
+    @media only screen and (max-width: 960px) {
+        .placeholder {
+            width: 640px;
+            height: 640px;
+        }
     }
 </style>
