@@ -62,7 +62,6 @@ export default {
     @media only screen and (min-width: 960px) {
         canvas {
             border: solid 2px gray;
-            /* height: 445px; */
             height: 400px;
         }
     }

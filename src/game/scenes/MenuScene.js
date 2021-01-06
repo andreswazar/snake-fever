@@ -32,9 +32,7 @@ class MenuScene extends Phaser.Scene {
         
         // Variables
         let positionX = this.game.config.width / 8 - 10;
-        // let positionY = this.game.config.height / 8;
         let width = 500;
-        // let height = 500;
         
         // Title
         this.add.text(positionX + (width / 2), 200, "Snake Fever", {

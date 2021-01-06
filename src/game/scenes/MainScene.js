@@ -78,9 +78,9 @@ class MainScene extends Phaser.Scene {
     showGameOver(message) {
         // Show the Game Over scene as overlay
         this.scene.launch("GameOver", {score: this.snake.score, gameConfig: this.game.config, title: message});
-        let panel = this.scene.get("GameOver");
-
+        
         // Listen to events from the Game Over scene
+        let panel = this.scene.get("GameOver");
         panel.events.on("clickTryAgain", this.handleTryAgain, this);
     }
 
