@@ -55,13 +55,8 @@ export default {
 </script>
 
 <style>
-    canvas {
-        border: solid 2px gray;
-    }
-
     @media only screen and (min-width: 960px) {
         canvas {
-            border: solid 2px gray;
             height: 400px;
         }
     }

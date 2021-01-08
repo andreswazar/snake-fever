@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="1" shaped class="mb-4">
+    <v-card elevation="1" class="mb-4">
         <v-card-title id="score">Current Score: {{score}}</v-card-title>
     </v-card>
 </template>

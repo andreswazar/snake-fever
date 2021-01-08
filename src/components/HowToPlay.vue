@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="1" shaped>
+    <v-card elevation="1">
         <v-card-title>
             How to Play
         </v-card-title>
