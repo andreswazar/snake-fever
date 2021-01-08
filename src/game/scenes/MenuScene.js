@@ -7,6 +7,7 @@ import {store} from "./../../store/store.js";
 class MenuScene extends Phaser.Scene {
     constructor() {
         super({key: "Menu", active: true});
+        this.alreadyCreated = false;
 
         // Data for the moving lines in title screen
         this.tileSize = 16;
@@ -23,13 +24,17 @@ class MenuScene extends Phaser.Scene {
     }
 
     create() {
-        // Sound
-        this.selectSound = this.sound.add("select_sound");
-        this.titleThemeMusic = this.sound.add("title_theme", {
-            volume: 1,
-            loop: true,
-        });
-        
+        if (!this.alreadyCreated) { // Prevents a bug where the music start overlapping and creating an unpleasant sound
+            this.alreadyCreated = true;
+
+            // Sound
+            this.selectSound = this.sound.add("select_sound");
+            this.titleThemeMusic = this.sound.add("title_theme", {
+                volume: 1,
+                loop: true,
+            });
+        }
+
         // Variables
         let positionX = this.game.config.width / 8 - 10;
         let width = 500;
@@ -38,7 +43,7 @@ class MenuScene extends Phaser.Scene {
         this.add.text(positionX + (width / 2), 200, "Snake Fever", {
             fontFamily: "Kenney Blocks",
             fontSize: '64px',
-			color: '#fff'
+            color: '#fff'
         }).setOrigin(0.5, 0.5).setDepth(100);
 
         // Buttons

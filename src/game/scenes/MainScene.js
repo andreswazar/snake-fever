@@ -15,6 +15,7 @@ import apiCommunicator from "./../utility/apiCommunicator.js";
 class MainScene extends Phaser.Scene {
     constructor(){
         super({key:"MainScene", active: false});
+        this.alreadyCreated = false;
     }
 
     preload() {
@@ -25,14 +26,18 @@ class MainScene extends Phaser.Scene {
     }
 
     create() {
-        // Sounds
-        this.gameMusic = this.sound.add("gameMusic", {
-            volume: 1,
-            loop: true,
-        });
-        this.gameOverSound = this.sound.add("gameOver");
-        this.greenAppleSound = this.sound.add("greenApple");
-        this.redAppleSound = this.sound.add("redApple");
+        if (!this.alreadyCreated) { // Prevents a bug where the music start overlapping and creating an unpleasant sound
+            this.alreadyCreated = true;
+
+            // Sounds
+            this.gameMusic = this.sound.add("gameMusic", {
+                volume: 1,
+                loop: true,
+            });
+            this.gameOverSound = this.sound.add("gameOver");
+            this.greenAppleSound = this.sound.add("greenApple");
+            this.redAppleSound = this.sound.add("redApple");
+        }
 
         // Entities
         this.snake = new Snake(this);
@@ -82,15 +87,26 @@ class MainScene extends Phaser.Scene {
         // Listen to events from the Game Over scene
         let panel = this.scene.get("GameOver");
         panel.events.on("clickTryAgain", this.handleTryAgain, this);
+        panel.events.on("clickMenu", this.handleMainMenu, this);
     }
 
     closeGameOver() {
         this.scene.stop("GameOver");
     }
 
+    closeMainScene() {
+        this.scene.stop("MainScene");
+    }
+
     handleTryAgain() {
         this.closeGameOver();
         this.scene.restart();
+    }
+
+    handleMainMenu() {
+        this.closeGameOver();
+        this.closeMainScene();
+        this.scene.launch("Menu");
     }
 }
 

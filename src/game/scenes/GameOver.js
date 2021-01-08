@@ -3,9 +3,13 @@ import Phaser from "phaser";
 import selectOgg from "./../assets/open_002.ogg";
 import gameOverTheme from "./../assets/POL-foggy-forest-short.wav";
 
+import {store} from "./../../store/store.js";
+
+
 class GameOver extends Phaser.Scene {
     constructor() {
         super({key: "GameOver", active: false});
+        this.alreadyCreated = false;
     }
 
     init (data) {
@@ -21,12 +25,16 @@ class GameOver extends Phaser.Scene {
     }
 
     create() {
-        // Sound
-        this.selectSound = this.sound.add("select_sound");
-        this.gameOverTheme = this.sound.add("game_over_theme", {
-            volume: 1,
-            loop: true,
-        });
+        if (!this.alreadyCreated) { // Prevents a bug where the music start overlapping and creating an unpleasant sound
+            this.alreadyCreated = true;
+
+            // Sound
+            this.selectSound = this.sound.add("select_sound");
+            this.gameOverTheme = this.sound.add("game_over_theme", {
+                volume: 1,
+                loop: true,
+            });
+        }
 
         // Play music
         this.gameOverTheme.play();
@@ -65,7 +73,10 @@ class GameOver extends Phaser.Scene {
     // Buttons
     createAllButtons(){
         // Try again
-        this.btn_again = this.createButton(220, 400, 200, 50, this.clickTryAgain, "Try Again");
+        this.btn_again = this.createButton(220, 400, 210, 50, this.clickTryAgain, "Try Again");
+
+        // Main menu
+        this.btn_menu = this.createButton(220, 470, 210, 50, this.clickMenu, "Main Menu");
     }
 
     createButton(positionX, positionY, width, height, callback, message) {
@@ -111,9 +122,17 @@ class GameOver extends Phaser.Scene {
 
     // Emits custom event that MainScene is listening to
     clickTryAgain() {
+        store.state.score = 0; // Resets score back to 0
         this.gameOverTheme.stop();
         this.selectSound.play();
         this.events.emit("clickTryAgain");
+    }
+
+    clickMenu() {
+        store.state.score = 0; // Resets score back to 0
+        this.gameOverTheme.stop();
+        this.selectSound.play();
+        this.events.emit("clickMenu");
     }
 }
 

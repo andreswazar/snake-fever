@@ -13,3 +13,17 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    @media only screen and (min-width: 960px) {
+        .v-card__title {
+            font-size: 110%;
+        }
+    }
+
+    @media only screen and (min-width: 1264px) {
+        .v-card__title {
+            font-size: 125%;
+        }
+    }
+</style>

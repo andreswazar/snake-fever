@@ -91,12 +91,20 @@ export default {
             height: 335px;
         }
 
+        .v-card__title {
+            font-size: 110%;
+        }
+
         p {
             font-size: 80%;
         }
     }
 
     @media only screen and (min-width: 1264px) {
+        .v-card__title {
+            font-size: 125%;
+        }
+
         p {
             font-size: 100%;
         }
