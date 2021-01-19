@@ -8,15 +8,15 @@
 
             <v-spacer></v-spacer>
 
-            <Popup />
+            <UsernamePopup />
         </v-app-bar>
     </nav>
 </template>
 
 <script>
-import Popup from "./Popup.vue"
+import UsernamePopup from "./UsernamePopup.vue"
 
 export default {
-    components: { Popup },
+    components: { UsernamePopup },
 }
 </script>

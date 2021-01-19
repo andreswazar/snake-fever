@@ -2,6 +2,9 @@ import Phaser from "phaser";
 import MainScene from "./scenes/MainScene.js";
 import MenuScene from "./scenes/MenuScene.js";
 import GameOver from "./scenes/GameOver.js";
+import MultiplayerMenuScene from "./scenes/MultiplayerMenuScene.js";
+import MultiplayerWaitingScene from "./scenes/MultiplayerWaitingScene.js";
+import MultiplayerGameScene from "./scenes/MultiplayerGameScene.js";
 import KenneyBlocks from "./assets/Kenney Blocks.ttf";
 
 function launch(containerId) {
@@ -10,7 +13,7 @@ function launch(containerId) {
     return new Phaser.Game({
         type: Phaser.AUTO,
         parent: containerId,
-        scene: [MenuScene, MainScene, GameOver],
+        scene: [MenuScene, MainScene, MultiplayerMenuScene, MultiplayerWaitingScene, MultiplayerGameScene, GameOver],
         scale: {
             mode: Phaser.Scale.FIT,
             width: 640,
@@ -28,5 +31,4 @@ function loadFont(name, url) {
     });
 }
 
-export default launch;
 export { launch };

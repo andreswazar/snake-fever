@@ -18,6 +18,14 @@ class MenuScene extends Phaser.Scene {
         this.lastSpawnTime = 0;
     }
 
+    init(data) {
+        if (data.comingFromMultiplayer) {
+            this.comingFromMultiplayer = true;
+        } else {
+            this.comingFromMultiplayer = false;
+        }
+    }
+
     preload() {
         this.load.audio("select_sound", selectOgg);
         this.load.audio("title_theme", titleTheme);
@@ -26,7 +34,7 @@ class MenuScene extends Phaser.Scene {
     create() {
         if (!this.alreadyCreated) { // Prevents a bug where the music start overlapping and creating an unpleasant sound
             this.alreadyCreated = true;
-
+            
             // Sound
             this.selectSound = this.sound.add("select_sound");
             this.titleThemeMusic = this.sound.add("title_theme", {
@@ -50,7 +58,9 @@ class MenuScene extends Phaser.Scene {
         this.createAllButtons();
 
         // Play title theme
-        this.titleThemeMusic.play();
+        if (!this.comingFromMultiplayer) { // If the user is coming to the Menu Scene from the Multiplayer Scene, then music is already playing
+            this.titleThemeMusic.play();
+        }
     }
 
     update(time) {
@@ -84,7 +94,8 @@ class MenuScene extends Phaser.Scene {
     // Buttons
     createAllButtons(){
         // Play button
-        this.btn_again = this.createButton(220, 400, 200, 50, this.handleClickPlay, "Play");
+        this.btn_onePlayer = this.createButton(220, 400, 200, 50, this.handleClickOnePlayer, "1 Player");
+        this.btn_twoPlayers = this.createButton(220, 470, 200, 50, this.handleClickTwoPlayers, "2 Players");
     }
 
     createButton(positionX, positionY, width, height, callback, message) {
@@ -135,12 +146,21 @@ class MenuScene extends Phaser.Scene {
     }
 
     // Opens main game and closes menu
-    handleClickPlay() {
+    handleClickOnePlayer() {
         if (store.state.gameIsPlayable) { // Prevents user from clicking through the username modal
             this.titleThemeMusic.stop();
             this.selectSound.play();
             this.closeMenu();
             this.scene.launch("MainScene");
+        }
+    }
+
+    // Opens multiplayer menu and closes main menu (but keeps audio)
+    handleClickTwoPlayers() {
+        if (store.state.gameIsPlayable) { // Prevents user from clicking through the username modal
+            this.selectSound.play();
+            this.closeMenu();
+            this.scene.launch("MultiplayerMenuScene", {mainMenuTheme: this.titleThemeMusic, selectSound: this.selectSound});
         }
     }
 }

@@ -106,7 +106,7 @@ class MainScene extends Phaser.Scene {
     handleMainMenu() {
         this.closeGameOver();
         this.closeMainScene();
-        this.scene.launch("Menu");
+        this.scene.launch("Menu", {comingFromMultiplayer: false}); // Keeps menu theme playing
     }
 }
 

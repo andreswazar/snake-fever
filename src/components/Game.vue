@@ -11,7 +11,6 @@ export default {
     data() {
         return {
             downloaded: false,
-            gameInstance: null,
             containerId: "game-container"
         }
     },
@@ -19,12 +18,10 @@ export default {
         const game = await import("./../game/game.js");
         this.downloaded = true;
         this.$nextTick(() => {
-            this.gameInstance = game.launch(this.containerId);
-        })
+            // Needed to have a reference to the game that can be used in socket handlers
+            this.$store.state.game = game.launch(this.containerId);
+        });
     },
-    destroyed() {
-        this.gameInstance.destroy(false);
-    }
 }
 </script>
 

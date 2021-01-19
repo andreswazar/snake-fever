@@ -10,13 +10,13 @@
 export default {
     computed: {
         alertIsVisible() {
-            return this.$store.state.showAlert
+            return this.$store.state.showAlert;
         },
         alertType() {
-            return this.$store.state.alertType
+            return this.$store.state.alertType;
         },
         alertMessage() {
-            return this.$store.state.alertMessage
+            return this.$store.state.alertMessage;
         }
     },
     methods: {

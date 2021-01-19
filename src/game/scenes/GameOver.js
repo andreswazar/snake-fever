@@ -13,10 +13,11 @@ class GameOver extends Phaser.Scene {
     }
 
     init (data) {
-        // Score data passed from "Main Scene" scene
+        // data is passed from "Main Scene" scene
         this.score = data.score;
         this.config = data.gameConfig;
         this.title = data.title; // Allows this scene to also be used as a victory scene
+        this.disableTryAgain = data.disableTryAgain;
     }
 
     preload() {
@@ -72,8 +73,10 @@ class GameOver extends Phaser.Scene {
 
     // Buttons
     createAllButtons(){
-        // Try again
-        this.btn_again = this.createButton(220, 400, 210, 50, this.clickTryAgain, "Try Again");
+        if (!this.disableTryAgain) {
+            // Try again
+            this.btn_again = this.createButton(220, 400, 210, 50, this.clickTryAgain, "Try Again");
+        }
 
         // Main menu
         this.btn_menu = this.createButton(220, 470, 210, 50, this.clickMenu, "Main Menu");
@@ -120,7 +123,7 @@ class GameOver extends Phaser.Scene {
         return btn;
     }
 
-    // Emits custom event that MainScene is listening to
+    // Emits custom events that MainScene is listening to
     clickTryAgain() {
         store.state.score = 0; // Resets score back to 0
         this.gameOverTheme.stop();

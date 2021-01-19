@@ -1,7 +1,7 @@
 import {store} from "./../../store/store.js";
 
 class apiCommunicator {
-    static sendScoreToAPI(score) {
+    static sendScoreToAPI(score = store.state.score) {
         fetch("http://localhost:8082/api/postScore", {
             method: "POST",
             headers: {"Content-Type": "application/json"},

@@ -12,7 +12,7 @@
                     Enter your username
                 </v-card-title>
                 <v-card-text>
-                    <v-form class="px-3" ref="form">
+                    <v-form class="px-3" ref="form" onSubmit="return false;">
                         <v-text-field label="Username" v-model="username" prepend-icon="mdi-account" :rules="usernameRules"></v-text-field>
                         <div class="text-center">
                             <v-btn text class="error mr-5" @click="cancel" v-if="this.$store.state.username">Cancel</v-btn>
@@ -61,6 +61,10 @@ export default {
         setGamePlayable() {
             this.$store.state.gameIsPlayable = true;
         }
+    },
+    mounted() {
+        this.$store.state.setGamePlayable = this.setGamePlayable;
+        this.$store.state.setGameUnplayable = this.setGameUnplayable;
     }
 }
 </script>

@@ -3,6 +3,7 @@
         <Navbar />  
         <v-main>
             <Alert />
+            <GameJoinPopup />
             <v-container>
                 <v-row>
                     <v-col order="2" cols="12" md="3" class="order-md-1">
@@ -27,8 +28,9 @@
 </template>
 
 <script>
-import Navbar from "./components/Navbar.vue";
+import Navbar from "./components/Navbar/Navbar.vue";
 import Alert from "./components/Alert.vue";
+import GameJoinPopup from "./components/GameJoinPopup.vue";
 import HowToPlay from "./components/HowToPlay.vue";
 import Game from "./components/Game.vue";
 import Scores from "./components/Scores.vue";
@@ -41,6 +43,7 @@ export default {
   components: {
       Navbar,
       Alert,
+      GameJoinPopup,
       HowToPlay,
       Game,
       Scores,

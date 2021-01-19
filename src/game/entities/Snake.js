@@ -9,7 +9,7 @@ class Snake {
         this.tileSize = 16;
         this.lastMoveTime = 0;  //  Records the last time at which the snake moved to know when it will move again (lastMoveTime + moveInterval)
         this.moveInterval = 150; // Adjusts the rate at which the snake moves
-        this.direction = Phaser.Math.Vector2.RIGHT; 
+        this.direction = Phaser.Math.Vector2.RIGHT;
         this.lastDirection = Phaser.Math.Vector2.RIGHT; // Useful for preventing "180 degrees turns"
         this.previousPosition = []; // Useful for moving the body of the snake
         this.applesConsumed = 0; // Variable used to make the snake grow. The value here will be the starting size of the body
@@ -23,7 +23,7 @@ class Snake {
 
         scene.input.keyboard.on("keydown", (event) => { // Captures the event object and forwards it to a custom function
             event.preventDefault();
-            this.keydown(event);
+            this.keydown(event.keyCode);
         });
 
         // Initializes score to 0 in the Vuex store and UI
@@ -31,8 +31,8 @@ class Snake {
     }
 
     // Snake movement
-    keydown(event) { 
-        switch (event.keyCode) {
+    keydown(keyCode) { 
+        switch (keyCode) {
             case 37: //left
                 if (this.lastDirection != Phaser.Math.Vector2.RIGHT) { // Prevents doing "180 degrees turns"
                     this.direction = Phaser.Math.Vector2.LEFT;
@@ -94,7 +94,7 @@ class Snake {
 
             this.body[i].x = previousX;
             this.body[i].y = previousY;
-        }
+        } // After this loop finishes, this.previousPosition will point to an empty cell behind the snake
     }
 
     checkForAppleConsumption() {
@@ -106,6 +106,7 @@ class Snake {
             }
 
             this.applesConsumed--;
+            // Creates a new block on the empty cell that previousPosition is pointing to
             this.body.push(this.scene.add.rectangle(this.previousPosition[0], this.previousPosition[1], this.tileSize, this.tileSize, 0xffffff).setOrigin(0));
         
         } else if (this.applesConsumed < 0) { // Shrinks the snake by 2 after consuming red apple or kills it

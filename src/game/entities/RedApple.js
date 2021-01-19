@@ -102,7 +102,7 @@ class RedApple {
                 );
                 
                 const color = Phaser.Display.Color.GetColor(colorObject.r, colorObject.g, colorObject.b);
-                let target = this.redAppleArray[this.redAppleArray.length - 1];
+                let target = this.redAppleArray[this.redAppleArray.length - 1]; // Only last added red apple flashes
                 if (target) {
                     this.redAppleArray[this.redAppleArray.length - 1].setFillStyle(color);
                 }
