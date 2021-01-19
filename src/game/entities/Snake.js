@@ -3,10 +3,12 @@ import {store} from "./../../store/store.js";
 
 class Snake {
     constructor(scene) {
+        this.scene = scene;
+        this.tileSize = 16;
+
         this.gameOver = false;
         this.deathAnimationStarted = false;
 
-        this.tileSize = 16;
         this.lastMoveTime = 0;  //  Records the last time at which the snake moved to know when it will move again (lastMoveTime + moveInterval)
         this.moveInterval = 150; // Adjusts the rate at which the snake moves
         this.direction = Phaser.Math.Vector2.RIGHT;
@@ -14,8 +16,6 @@ class Snake {
         this.previousPosition = []; // Useful for moving the body of the snake
         this.applesConsumed = 0; // Variable used to make the snake grow. The value here will be the starting size of the body
         this.score = 0;
-
-        this.scene = scene;
 
         this.body = [];
         // Adds the initial square, which is the head
@@ -58,12 +58,13 @@ class Snake {
 
     // Snake loop
     update(time) { 
-        if (this.gameOver == false) { // Normal loops happens as long as the player hasn't lost the game
+        if (!this.gameOver) { // Normal loops happens as long as the player hasn't lost the game
             if (time >= this.lastMoveTime + this.moveInterval) {
                 this.lastMoveTime = time;
                 this.moveHead();
                 this.moveBody();
                 this.checkForAppleConsumption();
+                this.checkForVictory();
                 this.checkForGameOver();
             }
         } else { // If player lost, it will play a death animation only once
@@ -99,12 +100,6 @@ class Snake {
 
     checkForAppleConsumption() {
         if (this.applesConsumed > 0) { // Grows the snake after consuming green apple
-
-            if (this.score >= 100) { // Check for victory
-                this.scene.triggerGameOver("You Win!");
-                this.gameOver = true;
-            }
-
             this.applesConsumed--;
             // Creates a new block on the empty cell that previousPosition is pointing to
             this.body.push(this.scene.add.rectangle(this.previousPosition[0], this.previousPosition[1], this.tileSize, this.tileSize, 0xffffff).setOrigin(0));
@@ -134,6 +129,13 @@ class Snake {
         // Snake dies by going off screen
         if (this.body[0].x < 0 || this.body[0].x >= this.scene.game.config.width || this.body[0].y < 0 || this.body[0].y >= this.scene.game.config.height) {
             this.scene.triggerGameOver("Game Over");
+            this.gameOver = true;
+        }
+    }
+
+    checkForVictory() {
+        if (this.score >= 100) { // Check for victory
+            this.scene.triggerGameOver("You Win!");
             this.gameOver = true;
         }
     }

@@ -1,8 +1,8 @@
 import io from "socket.io-client";
-import { store } from "./../../store/store.js";
-import { connectionHandler } from "./../scenes/MultiplayerMenuScene.js";
-import { roomCodeHandler, unknownGameHandler, fullGameHandler, beginGameHandler  } from "./../scenes/MultiplayerWaitingScene.js";
-import { gameStateHandler, greenAppleEatenHandler, gameOverHandler } from "./../scenes/MultiplayerGameScene.js";
+import { store } from "./../../../store/store.js";
+import { connectionHandler } from "./../../scenes/MultiplayerMenuScene.js";
+import { roomCodeHandler, unknownGameHandler, fullGameHandler, beginGameHandler  } from "./../../scenes/MultiplayerWaitingScene.js";
+import { gameStateHandler, greenAppleEatenHandler, gameOverHandler } from "./../../scenes/MultiplayerGameScene.js";
 
 let socket = {};
 
@@ -21,7 +21,6 @@ export function initializeHandlers() { // Registers the event handle after the g
     greenAppleEatenHandler(socket, store);
     gameOverHandler(socket, store.state.game);
 
-    // Events
     socket.on("playerNumberAssign", playerNumberAssignHandler);
 }
 

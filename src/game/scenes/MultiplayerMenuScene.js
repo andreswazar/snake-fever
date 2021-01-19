@@ -1,7 +1,10 @@
 import Phaser from "phaser";
-import { emitNewGame } from "./../utility/Socket.js";
+
 import { store } from "./../../store/store.js";
-import { connectToServer, initializeHandlers } from "./../utility/Socket.js";
+import { addText } from "../utility/builders/titleBuilder.js";
+import { addButton } from "./../utility/builders/buttonBuilder.js";
+import { emitNewGame } from "./../utility/socket/Socket.js";
+import { connectToServer, initializeHandlers } from "./../utility/socket/Socket.js";
 
 class MultiplayerMenuScene extends Phaser.Scene {
     constructor(){
@@ -10,7 +13,7 @@ class MultiplayerMenuScene extends Phaser.Scene {
     }
 
     init (data) {
-        // data is passed from "Main Scene" scene
+        // data is passed from "Menu" Scene
         this.mainMenuTheme = data.mainMenuTheme;
         this.selectSound = data.selectSound;
     }
@@ -22,69 +25,13 @@ class MultiplayerMenuScene extends Phaser.Scene {
             initializeHandlers();
         }
 
-        // Variables
-        let positionX = this.game.config.width / 8 - 10;
-        let width = 500;
-        
-        // Title
-        this.add.text(positionX + (width / 2), 200, "Multiplayer", {
-            fontFamily: "Kenney Blocks",
-            fontSize: '64px',
-            color: '#fff'
-        }).setOrigin(0.5, 0.5).setDepth(100);
+        // Display Title
+        addText(this, "Multiplayer", "64px", this.game.config.width * 0.5, this.game.config.height * 0.25);
 
-        // Buttons
-        this.createAllButtons();
-    }
-
-    // Buttons
-    createAllButtons(){
-        // Play button
-        this.btn_newGame = this.createButton(210, 400, 220, 50, this.handleNewGame, "New Game");
-        this.btn_joinGame = this.createButton(210, 470, 220, 50, this.handleJoinGame, "Join Game");
-        this.btn_joinGame = this.createButton(210, 540, 220, 50, this.handleMainMenu, "Main Menu");
-    }
-
-    createButton(positionX, positionY, width, height, callback, message) {
-        // Create button graphics
-        let btn = this.add.graphics({x: positionX, y: positionY});
-
-        btn.fillStyle("0x39314B", 1);
-        btn.fillRoundedRect(0, 0, width, height, 10);
-        btn.setDepth(100);
-
-        let hit_area = new Phaser.Geom.Rectangle(0, 0, width, height);
-        btn.setInteractive(hit_area, Phaser.Geom.Rectangle.Contains);
-
-        // Label
-        this.add.text(positionX + (width / 2), positionY + (height / 2), message, {
-            fontFamily: "Kenney Blocks",
-            fontSize: '30px',
-			color: '#fff'
-        }).setOrigin(0.5, 0.5).setDepth(101);
-
-        // Events definition to change colors based on cursor position
-        btn.myDownCallback = () => {
-            btn.clear();
-            btn.fillStyle("0x827094", 1);
-            btn.fillRoundedRect(0, 0, width, height, 10);
-        }
-
-        btn.myOutCallback = () => {
-            btn.clear();
-            btn.fillStyle("0x39314B", 1);
-            btn.fillRoundedRect(0, 0, width, height, 10);
-        }
-
-        // Event assignment
-        btn.on("pointerup", callback, this);
-        btn.on("pointerdown",  btn.myDownCallback, this);
-        btn.on("pointerout", btn.myOutCallback, this);
-        btn.on("pointerover", btn.myDownCallback, this);
-        btn.on("pointerout", btn.myOutCallback, this);
-
-        // Return graphics objects
-        return btn;
+        // Display Buttons
+        addButton(this, "New Game", "30px", 220, 400, 200, 50, this.handleNewGame.bind(this));
+        addButton(this, "Join Game", "30px", 220, 470, 200, 50, this.handleJoinGame.bind(this));
+        addButton(this, "Main Menu", "30px", 220, 540, 200, 50, this.handleMainMenu.bind(this));
     }
 
     // In game button handlers
@@ -132,6 +79,5 @@ export default MultiplayerMenuScene;
 export function connectionHandler(client, store) {
     client.on("connectedSuccesfully", function() {
         store.state.showAlertFunction("Connected to the server.", "success");
-        store.state.hideAlertFunction();
     });
 }

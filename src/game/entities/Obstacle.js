@@ -2,17 +2,17 @@ import Phaser from "phaser";
 
 class Obstacle {
     constructor(scene) {
-        this.tileSize = 16;
-        this.obstacleSpawnRate = 10;
-        this.amountOfIntangibility = 3000; // This will make obstacles intangible for 3 seconds
-        this.obstacleArray = [];
-
         this.scene = scene;
+        this.tileSize = 16;
+
+        this.obstacleSpawnRate = 10;
+        this.amountOfIntangibility = 3500; // This will make obstacles intangible for 3.5 seconds
+        this.obstacleArray = [];
     }
 
-    update(time, snake, greenApple) {
+    update(time, snake) {
         if (snake.gameOver == false) {
-            this.checkForObstaclesAdding(time, snake.score, greenApple);
+            this.checkForObstaclesAdding(time, snake.score);
             this.checkForDeathByObstacles(time, snake);
         }
     }
@@ -35,25 +35,12 @@ class Obstacle {
         }
     }
 
-    generateObstacle(time, greenApple) {
-        const position = this.getUniquePosition(greenApple);
+    generateObstacle(time) {
+        // Makes sure the obstacle doesn't spawn on top of the green apple
+        let position = this.scene.positionTracker.getUniquePosition({greenApple: true});
 
         this.obstacleArray.push(this.scene.add.rectangle(position[0], position[1], this.tileSize, this.tileSize, 0x808080).setOrigin(0));
         this.obstacleArray[this.obstacleArray.length - 1].intangibilityTimer = time + this.amountOfIntangibility;
-    }
-
-    // Makes sure the obstacle doesn't spawn on top of the green apple
-    getUniquePosition(greenApple) {
-        let positionX = 0;
-        let positionY = 0;
-        
-        do {
-            positionX = Math.floor((Math.random() * this.scene.game.config.width / this.tileSize)) * this.tileSize;
-            positionY = Math.floor((Math.random() * this.scene.game.config.height / this.tileSize)) * this.tileSize;
-        } 
-        while (positionX == greenApple.x && positionY == greenApple.y)
-
-        return [positionX, positionY];
     }
 
     addFlashingWarning() {

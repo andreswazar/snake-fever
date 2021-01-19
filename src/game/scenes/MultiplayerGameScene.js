@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 
 import { store } from "./../../store/store.js";
-import apiCommunicator from "./../utility/apiCommunicator.js";
-import { emitMovement } from "./../utility/Socket.js";
+import { sendScoreToAPI } from "../utility/api/apiCommunicator.js";
+import { emitMovement } from "./../utility/socket/Socket.js";
 import MultiplayerSnake from "../entities/MultiplayerSnake.js";
 import MultiplayerApple from "../entities/MultiplayerApple.js";
 
@@ -25,7 +25,7 @@ class MultiplayerGameScene extends Phaser.Scene {
 
     triggerGameOver(message) {
         if (store.state.score > 0) { // Sends score to backend, prevents score of 0 from being sent
-            apiCommunicator.sendScoreToAPI(store.state.score); 
+            sendScoreToAPI(store.state.score); 
         }
 
         this.time.addEvent({ // Shows the game over screen in 1.5 seconds
@@ -63,11 +63,13 @@ export default MultiplayerGameScene;
 
 // Socket handlers
 export function gameStateHandler(client, game) { // Updates the board according to the game state
+    let scene = game.scene.keys.MultiplayerGameScene;
+    
     client.on("gameState", function(gameState) {
         let serializedGameState = JSON.parse(gameState);
-        game.scene.keys.MultiplayerGameScene.playerOne.renderSnake(serializedGameState.players[0].body);
-        game.scene.keys.MultiplayerGameScene.playerTwo.renderSnake(serializedGameState.players[1].body);
-        game.scene.keys.MultiplayerGameScene.greenApple.renderApple(serializedGameState.greenApple);
+        scene.playerOne.renderSnake(serializedGameState.players[0].body);
+        scene.playerTwo.renderSnake(serializedGameState.players[1].body);
+        scene.greenApple.renderApple(serializedGameState.greenApple);
     });
 }
 
@@ -78,7 +80,9 @@ export function greenAppleEatenHandler(client, store) {
 }
 
 export function gameOverHandler(client, game) {
+    let scene = game.scene.keys.MultiplayerGameScene;
+    
     client.on("gameOver", function() {
-        game.scene.keys.MultiplayerGameScene.triggerGameOver("Game Over");
+        scene.triggerGameOver("Game Over");
     });
 }

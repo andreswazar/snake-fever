@@ -21,7 +21,6 @@ export const store = new Vuex.Store({
         alertType: "error",
         alertMessage: "",
         showAlertFunction: {},
-        hideAlertFunction: {},
 
         // Related to game code popup
         showGameCodePopup: false,

@@ -56,10 +56,8 @@ export default {
             }).then((decodedResponse) => {
                 this.scores = decodedResponse;
                 this.$store.state.showAlertFunction("High scores retrieved successfully.", "success");
-                this.$store.state.hideAlertFunction();
             }).catch(() => {
                 this.$store.state.showAlertFunction("Failed to retrieve high scores.", "error");
-                this.$store.state.hideAlertFunction();
             });
         }
     },

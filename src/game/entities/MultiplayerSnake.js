@@ -4,9 +4,9 @@
 class MultiplayerSnake {
     constructor(scene, color) {
         this.scene = scene;
+        this.tileSize = 16;
 
         this.color = color;
-        this.tileSize = 16;
         this.body = []; 
     }
 

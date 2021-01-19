@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 
+import { addText } from "../utility/builders/titleBuilder.js";
+
 class MultiplayerWaitingScene extends Phaser.Scene {
     constructor(){
         super({key:"MultiplayerWaitingScene", active: false});
@@ -13,19 +15,8 @@ class MultiplayerWaitingScene extends Phaser.Scene {
     }
 
     create() {
-        // Variables
-        let positionX = this.game.config.width / 8 - 10;
-        let width = 500;
-        
-        // Title
-        this.add.text(positionX + (width / 2), 200, this.title, {
-            fontFamily: "Kenney Blocks",
-            fontSize: '64px',
-            color: '#fff'
-        }).setOrigin(0.5, 0.5).setDepth(100);
-
-        // Buttons
-        // this.createAllButtons();
+        // Display Title
+        addText(this, this.title, "64px", this.game.config.width * 0.5, this.game.config.height * 0.25);
     }
 }
 
@@ -34,17 +25,8 @@ export default MultiplayerWaitingScene;
 // Socket handlers
 export function roomCodeHandler(client, game) { // Adds the room code on the screen
     client.on("gameCode", function(gameCode) {
-        console.log(gameCode);
-
-        // Variables
-        let positionX = game.config.width / 8 - 10;
-        let width = 500;
-
-        game.scene.keys.MultiplayerWaitingScene.add.text(positionX + (width / 2), 270, gameCode, {
-            fontFamily: "Kenney Blocks",
-            fontSize: '64px',
-            color: '#fff'
-        }).setOrigin(0.5, 0.5).setDepth(100);
+        // Display Title
+        addText(game.scene.keys.MultiplayerWaitingScene, gameCode, "64px", game.config.width * 0.5, game.config.height * 0.40);
     });
 }
 
@@ -68,3 +50,4 @@ export function beginGameHandler(client, game, closeMultiplayerWaiting, openMult
         openMultiplayerGame();
     });
 }
+

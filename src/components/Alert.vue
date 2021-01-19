@@ -24,6 +24,8 @@ export default {
             this.$store.state.alertMessage = alertMessage;
             this.$store.state.alertType = alertType;
             this.$store.state.showAlert = true;
+
+            this.hideAlert();
         },
         hideAlert() {
             window.setTimeout(() => {
@@ -33,7 +35,6 @@ export default {
     },
     mounted() {
         this.$store.state.showAlertFunction = this.showAlert;
-        this.$store.state.hideAlertFunction = this.hideAlert;
     }
 }
 </script>

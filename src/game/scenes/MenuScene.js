@@ -2,7 +2,9 @@ import Phaser from "phaser";
 import selectOgg from "./../assets/open_002.ogg";
 import titleTheme from "./../assets/POL-treasure-match-short.wav";
 
-import {store} from "./../../store/store.js";
+import { store } from "./../../store/store.js";
+import { addText } from "./../utility/builders/titleBuilder.js";
+import { addButton } from "./../utility/builders/buttonBuilder.js";
 
 class MenuScene extends Phaser.Scene {
     constructor() {
@@ -43,24 +45,17 @@ class MenuScene extends Phaser.Scene {
             });
         }
 
-        // Variables
-        let positionX = this.game.config.width / 8 - 10;
-        let width = 500;
-        
-        // Title
-        this.add.text(positionX + (width / 2), 200, "Snake Fever", {
-            fontFamily: "Kenney Blocks",
-            fontSize: '64px',
-            color: '#fff'
-        }).setOrigin(0.5, 0.5).setDepth(100);
-
-        // Buttons
-        this.createAllButtons();
-
         // Play title theme
-        if (!this.comingFromMultiplayer) { // If the user is coming to the Menu Scene from the Multiplayer Scene, then music is already playing
+        if (!this.comingFromMultiplayer) { // If the user is coming to the Menu Scene from the Multiplayer Menu Scene, then music is already playing
             this.titleThemeMusic.play();
         }
+
+        // Display Title
+        addText(this, "Snake Fever", "64px", this.game.config.width * 0.5, this.game.config.height * 0.25);
+
+        // Display Buttons
+        addButton(this, "1 player", "30px", 220, 400, 200, 50, this.handleClickOnePlayer.bind(this));
+        addButton(this, "2 players", "30px", 220, 470, 200, 50, this.handleClickTwoPlayers.bind(this));
     }
 
     update(time) {
@@ -89,55 +84,6 @@ class MenuScene extends Phaser.Scene {
                 this.rectangles.splice(index,1);
             }
         });
-    }
-
-    // Buttons
-    createAllButtons(){
-        // Play button
-        this.btn_onePlayer = this.createButton(220, 400, 200, 50, this.handleClickOnePlayer, "1 Player");
-        this.btn_twoPlayers = this.createButton(220, 470, 200, 50, this.handleClickTwoPlayers, "2 Players");
-    }
-
-    createButton(positionX, positionY, width, height, callback, message) {
-        // Create button graphics
-        let btn = this.add.graphics({x: positionX, y: positionY});
-
-        btn.fillStyle("0x39314B", 1);
-        btn.fillRoundedRect(0, 0, width, height, 10);
-        btn.setDepth(100);
-
-        let hit_area = new Phaser.Geom.Rectangle(0, 0, width, height);
-        btn.setInteractive(hit_area, Phaser.Geom.Rectangle.Contains);
-
-        // Label
-        this.add.text(positionX + (width / 2), positionY + (height / 2), message, {
-            fontFamily: "Kenney Blocks",
-            fontSize: '30px',
-			color: '#fff'
-        }).setOrigin(0.5, 0.5).setDepth(101);
-
-        // Events definition to change colors based on cursor position
-        btn.myDownCallback = () => {
-            btn.clear();
-            btn.fillStyle("0x827094", 1);
-            btn.fillRoundedRect(0, 0, width, height, 10);
-        }
-
-        btn.myOutCallback = () => {
-            btn.clear();
-            btn.fillStyle("0x39314B", 1);
-            btn.fillRoundedRect(0, 0, width, height, 10);
-        }
-
-        // Event assignment
-        btn.on("pointerup", callback, this);
-        btn.on("pointerdown",  btn.myDownCallback, this);
-        btn.on("pointerout", btn.myOutCallback, this);
-        btn.on("pointerover", btn.myDownCallback, this);
-        btn.on("pointerout", btn.myOutCallback, this);
-
-        // Return graphics objects
-        return btn;
     }
 
     // Closes current scene

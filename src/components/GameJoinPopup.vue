@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { emitJoinGame } from "./../game/utility/Socket.js";
+import { emitJoinGame } from "./../game/utility/socket/Socket.js";
 
 export default {
     data() {

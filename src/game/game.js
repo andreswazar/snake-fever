@@ -1,11 +1,12 @@
 import Phaser from "phaser";
+import KenneyBlocks from "./assets/Kenney Blocks.ttf";
+
 import MainScene from "./scenes/MainScene.js";
 import MenuScene from "./scenes/MenuScene.js";
 import GameOver from "./scenes/GameOver.js";
 import MultiplayerMenuScene from "./scenes/MultiplayerMenuScene.js";
 import MultiplayerWaitingScene from "./scenes/MultiplayerWaitingScene.js";
 import MultiplayerGameScene from "./scenes/MultiplayerGameScene.js";
-import KenneyBlocks from "./assets/Kenney Blocks.ttf";
 
 function launch(containerId) {
     loadFont("Kenney Blocks", KenneyBlocks);
@@ -24,6 +25,7 @@ function launch(containerId) {
 
 function loadFont(name, url) {
     var newFont = new FontFace(name, `url(${url})`);
+    
     newFont.load().then(function (loaded) {
         document.fonts.add(loaded);
     }).catch(function (error) {

@@ -1,9 +1,9 @@
 class MultiplayerApple {
     constructor(scene, color, startX, startY) {
         this.scene = scene;
+        this.tileSize = 16;
 
         this.color = color;
-        this.tileSize = 16;
         this.apple = this.scene.add.rectangle(startX, startY, this.tileSize, this.tileSize, this.color).setOrigin(0);
     }
 

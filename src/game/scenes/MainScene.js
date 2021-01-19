@@ -5,12 +5,13 @@ import gameOverOgg from "./../assets/jingles_NES00.ogg";
 import greenAppleEatOgg from "./../assets/jingles_NES01.ogg";
 import redAppleEatOgg from "./../assets/jingles_NES02.ogg";
 
-import Snake from "../entities/Snake.js"
-import GreenApple from "../entities/GreenApple.js";
-import RedApple from "../entities/RedApple.js";
-import Obstacle from "../entities/Obstacle.js";
+import Snake from "./../entities/Snake.js"
+import GreenApple from "./../entities/GreenApple.js";
+import RedApple from "./../entities/RedApple.js";
+import Obstacle from "./../entities/Obstacle.js";
 
-import apiCommunicator from "./../utility/apiCommunicator.js";
+import PositionTracker from "./../utility/positionTracker/positionTracker.js";
+import { sendScoreToAPI } from "./../utility/api/apiCommunicator.js";
 
 class MainScene extends Phaser.Scene {
     constructor(){
@@ -39,6 +40,7 @@ class MainScene extends Phaser.Scene {
             this.redAppleSound = this.sound.add("redApple");
         }
 
+        this.positionTracker = new PositionTracker(this);
         // Entities
         this.snake = new Snake(this);
         this.redApple = new RedApple(this);
@@ -50,17 +52,18 @@ class MainScene extends Phaser.Scene {
     }
 
     update(time) {
+        this.positionTracker.update(this.snake, this.obstacles.obstacleArray, this.redApple.redAppleArray, this.greenApple.apple)
         this.snake.update(time);
-        this.greenApple.update(this.snake, this.obstacles.obstacleArray, this.redApple.redAppleArray);
-        this.redApple.update(time, this.snake, this.greenApple.apple);
-        this.obstacles.update(time, this.snake, this.greenApple.apple);
+        this.greenApple.update(this.snake);
+        this.redApple.update(time, this.snake);
+        this.obstacles.update(time, this.snake);
     }
 
     triggerGameOver(message) {
         this.gameMusic.stop();
 
         if (this.snake.score > 0) { // Sends score to backend, prevents score of 0 from being sent
-            apiCommunicator.sendScoreToAPI(this.snake.score); 
+            sendScoreToAPI(this.snake.score); 
         }
 
         if (message == "Game Over") {

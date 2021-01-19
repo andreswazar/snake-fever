@@ -2,44 +2,31 @@ import Phaser from "phaser";
 
 class RedApple {
     constructor(scene) {
+        this.scene = scene;
         this.tileSize = 16;
+
         this.maxAliveTime = 43000;
         this.maxSpawnInterval = 23000;
         this.nextSpawnInterval = Math.random() * this.maxSpawnInterval; // Gets any time between 0 and 23 seconds
         this.lastSpawnTime = 0;
         this.amountOfIntangibility = 3500; // This will make red apples intangible for 3.5 seconds
         this.redAppleArray = [];
-
-        this.scene = scene;
     }
 
-    update(time, snake, greenApple) {
+    update(time, snake) {
         if (snake.gameOver == false) {
-            this.checkForRedApplesAdding(time, greenApple);
+            this.checkForRedApplesAdding(time);
             this.checkForRedApplesTimer(time);
             this.checkForRedApplesConsumption(time, snake);
         }
     }
 
-    // Makes sure the red apple doesn't spawn on top of the green apple
-    getUniquePosition(greenApple) {
-        let positionX = 0;
-        let positionY = 0;
-        
-        do {
-            positionX = Math.floor((Math.random() * this.scene.game.config.width / this.tileSize)) * this.tileSize;
-            positionY = Math.floor((Math.random() * this.scene.game.config.height / this.tileSize)) * this.tileSize;
-        } 
-        while (positionX == greenApple.x && positionY == greenApple.y)
-
-        return [positionX, positionY];
-    }
-
     // Generates a red apple by adding it to an array
     // Sets the amount of time it will be alive for
     // Sets intangibility period
-    generateRedApple(time, greenApple) {
-        const position = this.getUniquePosition(greenApple);
+    generateRedApple(time) {
+        // Makes sure the apple doesn't spawn on top the green apple
+        let position = this.scene.positionTracker.getUniquePosition({greenApple: true});
 
         this.redAppleArray.push(this.scene.add.rectangle(position[0], position[1], this.tileSize, this.tileSize, 0xFF0000).setOrigin(0));
         this.redAppleArray[this.redAppleArray.length - 1].aliveTime = time + (Math.random() * (this.maxAliveTime - 23000) + 23000); // Min value is 23000
@@ -47,9 +34,9 @@ class RedApple {
     }
 
     // Red apples get added to the game over time
-    checkForRedApplesAdding(time, greenApple) {
+    checkForRedApplesAdding(time) {
         if (time > this.lastSpawnTime + this.nextSpawnInterval) {
-            this.generateRedApple(time, greenApple);
+            this.generateRedApple(time);
             this.addFlashingWarning();
 
             this.nextSpawnInterval = (Math.random() * (this.maxSpawnInterval - 13000) + 13000); // Min value is 13000
