@@ -3,7 +3,7 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import {store} from "./store/store.js";
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   store: store,

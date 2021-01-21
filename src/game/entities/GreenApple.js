@@ -4,6 +4,8 @@ class GreenApple {
     constructor(scene) {
         this.scene = scene;
         this.tileSize = 16;
+
+        this.apple = { x: 0, y: 0};
     }
 
     update(snake) {

@@ -52,7 +52,7 @@ class MainScene extends Phaser.Scene {
     }
 
     update(time) {
-        this.positionTracker.update(this.snake, this.obstacles.obstacleArray, this.redApple.redAppleArray, this.greenApple.apple)
+        this.positionTracker.update(this.snake, this.obstacles.obstacleArray, this.redApple.redAppleArray, this.greenApple.apple);
         this.snake.update(time);
         this.greenApple.update(this.snake);
         this.redApple.update(time, this.snake);
