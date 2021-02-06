@@ -5,7 +5,7 @@ class GreenApple {
         this.scene = scene;
         this.tileSize = 16;
 
-        this.apple = { x: 0, y: 0};
+        this.apple = this.scene.add.rectangle(320, 320, this.tileSize, this.tileSize, 0x00ff00).setOrigin(0);
     }
 
     update(snake) {
